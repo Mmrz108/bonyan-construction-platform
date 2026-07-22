@@ -29,10 +29,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Hide the Next.js "N" route indicator during local development.
   devIndicators: false,
-  // Docker / self-host only. Vercel breaks with `output: "standalone"` (404).
-  ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
+  // Only for Docker (`OUTPUT_STANDALONE=1`). Never enable on Vercel — causes black 404.
+  ...(process.env.OUTPUT_STANDALONE === "1"
+    ? { output: "standalone" as const }
+    : {}),
   async headers() {
     return [
       {

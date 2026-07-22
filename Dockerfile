@@ -14,6 +14,7 @@ COPY . .
 # Build-time public URL is same-origin behind nginx; server-side API is injected at runtime.
 ENV NEXT_TELEMETRY_DISABLED=1
 # Prefer a stable webpack build in CI/Docker (package.json uses turbopack locally).
+ENV OUTPUT_STANDALONE=1
 RUN npx next build
 
 FROM node:22-alpine AS runner
