@@ -17,6 +17,15 @@ const projectTypes = [
   "other",
 ] as const;
 
+const supervisionTypes = [
+  "visit_basis",
+  "lump_sum",
+  "monthly_6",
+  "monthly_4",
+  "per_month_3",
+  "per_month_2",
+] as const;
+
 const stageStatuses = ["not_started", "in_progress", "completed"] as const;
 
 const memberRoles = [
@@ -66,6 +75,8 @@ export function createProjectSchema(messages: {
       contract: z.string().uuid(messages.contractRequired),
       status: z.enum(projectStatuses),
       project_type: z.enum(projectTypes),
+      supervision_type: z.enum(supervisionTypes).default("visit_basis"),
+      assigned_region: z.string().optional().default(""),
       location: z.string().optional().default(""),
       address: z.string().optional().default(""),
       latitude: optionalCoord({ invalid: messages.coordInvalid }),
@@ -121,5 +132,6 @@ export type MemberFormValues = z.infer<ReturnType<typeof createMemberSchema>>;
 
 export const PROJECT_STATUSES = projectStatuses;
 export const PROJECT_TYPES = projectTypes;
+export const SUPERVISION_TYPES = supervisionTypes;
 export const STAGE_STATUSES = stageStatuses;
 export const MEMBER_ROLES = memberRoles;

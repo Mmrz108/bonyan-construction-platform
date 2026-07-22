@@ -15,8 +15,14 @@
   },
   "nav": {
     "dashboard": "Dashboard",
-    "projects": "Projects",
-    "siteVisits": "Site visits",
+    "projects": "View Projects",
+    "createProject": "Create Project",
+    "createStages": "Create Stages",
+    "siteVisits": "Request Site Visit",
+    "users": "Select Users",
+    "clients": "Clients",
+    "contracts": "Contracts",
+    "email": "Email",
     "issues": "Issues",
     "reports": "Reports",
     "settings": "Settings",
@@ -94,6 +100,17 @@
     "emptyWorkspaceDescription": "When projects and site visits are assigned to you, this dashboard will fill with live metrics.",
     "errorTitle": "Could not load dashboard",
     "errorDescription": "We could not fetch supervision metrics from the API. Check your connection and try again.",
+    "adminShortcuts": {
+      "section": "Admin shortcuts",
+      "viewProjects": "View Projects",
+      "createProject": "Create Project",
+      "addStages": "Add Stages",
+      "userAccess": "Add / Remove User Access",
+      "visitRequests": "Site Visit Requests",
+      "pending": "Total Pending Request",
+      "approved": "Total Approved Request",
+      "rejected": "Total Rejected Request"
+    },
     "visitStatus": {
       "scheduled": "Scheduled",
       "in_progress": "In progress",
@@ -102,20 +119,25 @@
     }
   },
   "projects": {
-    "title": "Projects",
+    "title": "View Projects",
     "detailTitle": "Project details",
     "description": "Search, filter, and open supervision projects assigned to your workspace.",
-    "createTitle": "Create project",
-    "createHint": "Link a contract, set status, and add the primary site location.",
+    "createTitle": "Create Project",
+    "createHint": "Link a contract, set status, and add the primary site location. Create clients and contracts from the sidebar if the list is empty.",
     "editTitle": "Edit project",
     "editHint": "Changes are saved through the API. Unauthorized updates are rejected by the server.",
     "backToList": "Back to projects",
     "searchLabel": "Search",
     "searchPlaceholder": "Code, name, client, contract…",
     "filterStatus": "Status",
-    "filterType": "Type",
+    "filterType": "Project Type",
+    "filterSupervision": "Supervision",
     "filterAll": "All",
+    "filterAllTypes": "All Project Types",
+    "filterAllSupervision": "All Supervision Types",
     "clearFilters": "Clear filters",
+    "regionNotAssigned": "Not Assign",
+    "assignUserNone": "Not assigned",
     "pagination": "{count} projects · page {page} of {pages}",
     "emptyTitle": "No projects found",
     "emptyDescription": "Try adjusting filters, or create a project if you have manage access.",
@@ -161,7 +183,11 @@
       "contractPlaceholder": "Select a contract",
       "client": "Client",
       "status": "Status",
-      "type": "Type",
+      "type": "Project Type",
+      "supervision": "Supervision",
+      "region": "Assign Region",
+      "projectNo": "Project No",
+      "assignUser": "Assign User",
       "location": "Location",
       "address": "Address",
       "latitude": "Latitude",
@@ -197,7 +223,10 @@
       "next": "Next",
       "addStage": "Add stage",
       "addMember": "Add member",
-      "removeMember": "Remove member"
+      "removeMember": "Remove member",
+      "viewProject": "View Project",
+      "viewSite": "View Site",
+      "openLocation": "Open Location"
     },
     "validation": {
       "codeRequired": "Project code is required.",
@@ -232,12 +261,20 @@
       "cancelled": "Cancelled"
     },
     "type": {
-      "residential": "Residential",
+      "residential": "Residents",
       "commercial": "Commercial",
       "infrastructure": "Infrastructure",
       "industrial": "Industrial",
       "mixed_use": "Mixed use",
       "other": "Other"
+    },
+    "supervision": {
+      "visit_basis": "Visit Basis",
+      "lump_sum": "Lum Sum",
+      "monthly_6": "Monthly 6 Times",
+      "monthly_4": "Monthly 4 Times",
+      "per_month_3": "3per month",
+      "per_month_2": "2 per mponth"
     },
     "stageStatus": {
       "not_started": "Not started",
@@ -689,5 +726,146 @@
     "footerCopyright": "Copyright © by Nathan Smartway. All Rights Reserved.",
     "callNow": "Call Now",
     "whatsapp": "WhatsApp"
+  },
+  "stagesAdmin": {
+    "title": "Stages",
+    "description": "Manage the global construction stage catalog used when planning projects.",
+    "createTitle": "Add stage",
+    "editTitle": "Edit Stages",
+    "formHint": "Stages appear in order across project planning screens.",
+    "listTitle": "Stages",
+    "emptyTitle": "No stages yet",
+    "emptyDescription": "Add the first construction stage to the catalog.",
+    "fields": {
+      "name": "Stage name",
+      "nameAr": "Stage name (Arabic)",
+      "order": "Order"
+    },
+    "actions": {
+      "add": "Add stage",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Remove this stage from the catalog?"
+    },
+    "validation": {
+      "nameRequired": "Stage name is required."
+    },
+    "errors": {
+      "load": "Could not load stages",
+      "loadHint": "Check your admin access or try again.",
+      "saveFailed": "Could not save stage."
+    }
+  },
+  "clientsAdmin": {
+    "title": "Clients",
+    "description": "Organization records used when creating contracts and projects.",
+    "createTitle": "Add client",
+    "createHint": "Add a client first, then create a contract for that client.",
+    "searchPlaceholder": "Search clients…",
+    "emptyTitle": "No clients yet",
+    "emptyDescription": "Create the first client organization.",
+    "pagination": "{count} clients · page {page} of {pages}",
+    "fields": {
+      "code": "Code",
+      "name": "Name",
+      "city": "City",
+      "region": "Region"
+    },
+    "actions": {
+      "add": "Add client",
+      "closeForm": "Close form",
+      "delete": "Delete",
+      "deleteConfirm": "Soft-delete this client?",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "errors": {
+      "load": "Could not load clients",
+      "loadHint": "You need manage access for clients.",
+      "saveFailed": "Could not save client."
+    }
+  },
+  "contractsAdmin": {
+    "title": "Contracts",
+    "description": "Create contracts with planned monthly visits, then link them when creating projects.",
+    "createTitle": "Add contract",
+    "createHint": "Select a client and set planned visits per month for supervision cadence.",
+    "searchPlaceholder": "Search contracts…",
+    "emptyTitle": "No contracts yet",
+    "emptyDescription": "Create a client first, then add a contract.",
+    "pagination": "{count} contracts · page {page} of {pages}",
+    "hints": {
+      "needClient": "No clients found —"
+    },
+    "validation": {
+      "clientRequired": "Select a client."
+    },
+    "fields": {
+      "client": "Client",
+      "clientPlaceholder": "Select a client",
+      "reference": "Reference code",
+      "title": "Title",
+      "visitsPerMonth": "Planned visits / month",
+      "visitsShort": "{count}/mo visits"
+    },
+    "actions": {
+      "add": "Add contract",
+      "closeForm": "Close form",
+      "manageClients": "Manage clients",
+      "delete": "Delete",
+      "deleteConfirm": "Soft-delete this contract?",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "errors": {
+      "load": "Could not load contracts",
+      "loadHint": "You need manage access for contracts.",
+      "saveFailed": "Could not save contract."
+    }
+  },
+  "usersAdmin": {
+    "title": "Clients",
+    "description": "Verify clients, add access, edit roles, and suspend accounts — list updates without a page refresh.",
+    "addTitle": "Add User",
+    "addHint": "Create a user account and assign an initial role. The verified list refreshes immediately after save.",
+    "editTitle": "Edit user",
+    "searchPlaceholder": "Search by name or email…",
+    "emptyTitle": "No users in this list",
+    "emptyDescription": "Try another tab or adjust your search.",
+    "pagination": "{count} users · page {page} of {pages}",
+    "successCreated": "User created. Showing verified list.",
+    "successUpdated": "User updated.",
+    "tabs": {
+      "verified": "Verified",
+      "add": "Add User",
+      "nonVerified": "Non Verified",
+      "suspended": "Suspended"
+    },
+    "fields": {
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "password": "Password",
+      "newPassword": "New password",
+      "newPasswordHint": "Leave blank to keep current password",
+      "role": "Role",
+      "since": "Since"
+    },
+    "actions": {
+      "create": "Create user",
+      "edit": "Edit",
+      "verify": "Verify",
+      "unverify": "Mark non-verified",
+      "suspend": "Suspend",
+      "reactivate": "Reactivate",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "errors": {
+      "load": "Could not load users",
+      "loadHint": "Admin access is required for Select Users.",
+      "saveFailed": "Could not update user access."
+    }
   }
 }

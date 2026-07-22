@@ -1,13 +1,20 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
+  Briefcase,
+  Building2,
   ClipboardList,
   FileText,
   FolderKanban,
+  FolderPlus,
+  Layers,
   LayoutDashboard,
+  Mail,
   MapPinned,
   Settings,
+  Users,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -19,7 +26,13 @@ import { getNavItemsForRoles } from "@/lib/auth/navigation";
 const ICONS: Record<string, LucideIcon> = {
   dashboard: LayoutDashboard,
   projects: FolderKanban,
+  createProject: FolderPlus,
+  createStages: Layers,
   siteVisits: MapPinned,
+  users: Users,
+  clients: Building2,
+  contracts: Briefcase,
+  email: Mail,
   issues: ClipboardList,
   reports: FileText,
   settings: Settings,
@@ -34,8 +47,10 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const t = useTranslations("nav");
   const tCommon = useTranslations("common");
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
   const items = getNavItemsForRoles(user?.roles);
+  const creating = searchParams.get("create") === "1";
 
   return (
     <>
@@ -84,9 +99,20 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {items.map((item) => {
             const Icon = ICONS[item.key] ?? LayoutDashboard;
-            const active =
-              item.implemented &&
-              (pathname === item.href || pathname.startsWith(`${item.href}/`));
+            const itemPath = item.href.split("?")[0] ?? item.href;
+            let active = false;
+            if (item.implemented) {
+              if (item.key === "createProject") {
+                active = pathname === "/projects" && creating;
+              } else if (item.key === "projects") {
+                active =
+                  (pathname === "/projects" && !creating) ||
+                  pathname.startsWith("/projects/");
+              } else {
+                active =
+                  pathname === itemPath || pathname.startsWith(`${itemPath}/`);
+              }
+            }
 
             if (!item.implemented) {
               return (

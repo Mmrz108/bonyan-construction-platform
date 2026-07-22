@@ -14,6 +14,11 @@ export const AUTH_PUBLIC_PATHS = ["/login"] as const;
 export const AUTH_APP_PATH_PREFIXES = [
   "/dashboard",
   "/projects",
+  "/stages",
+  "/users",
+  "/clients",
+  "/contracts",
+  "/email",
   "/site-visits",
   "/issues",
   "/reports",

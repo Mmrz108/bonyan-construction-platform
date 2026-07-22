@@ -7,12 +7,24 @@ import {
   hasAnyRole,
 } from "@/lib/auth/roles";
 
+const PROJECT_MANAGE_ROLES: RoleCode[] = [
+  "SUPER_ADMIN",
+  "ADMIN",
+  "PROJECT_MANAGER",
+];
+
 export type NavItemConfig = {
   href: string;
   key:
     | "dashboard"
     | "projects"
+    | "createProject"
+    | "createStages"
     | "siteVisits"
+    | "users"
+    | "clients"
+    | "contracts"
+    | "email"
     | "issues"
     | "reports"
     | "settings";
@@ -35,10 +47,46 @@ export const NAV_ITEMS: readonly NavItemConfig[] = [
     implemented: true,
   },
   {
+    href: "/projects?create=1",
+    key: "createProject",
+    roles: PROJECT_MANAGE_ROLES,
+    implemented: true,
+  },
+  {
+    href: "/clients",
+    key: "clients",
+    roles: PROJECT_MANAGE_ROLES,
+    implemented: true,
+  },
+  {
+    href: "/contracts",
+    key: "contracts",
+    roles: PROJECT_MANAGE_ROLES,
+    implemented: true,
+  },
+  {
+    href: "/stages",
+    key: "createStages",
+    roles: SETTINGS_ROLES,
+    implemented: true,
+  },
+  {
     href: "/site-visits",
     key: "siteVisits",
     roles: INSPECTION_ROLES,
     implemented: true,
+  },
+  {
+    href: "/users",
+    key: "users",
+    roles: SETTINGS_ROLES,
+    implemented: true,
+  },
+  {
+    href: "/email",
+    key: "email",
+    roles: SETTINGS_ROLES,
+    implemented: false,
   },
   {
     href: "/issues",

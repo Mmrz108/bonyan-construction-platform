@@ -20,6 +20,14 @@ export type ProjectType =
   | "mixed_use"
   | "other";
 
+export type SupervisionType =
+  | "visit_basis"
+  | "lump_sum"
+  | "monthly_6"
+  | "monthly_4"
+  | "per_month_3"
+  | "per_month_2";
+
 export type ProjectMemberRole =
   | "project_manager"
   | "supervisor"
@@ -73,6 +81,8 @@ export type Project = {
   contract_reference: string | null;
   status: ProjectStatus;
   project_type: ProjectType;
+  supervision_type: SupervisionType;
+  assigned_region: string;
   location: string;
   address: string;
   latitude: string | null;
@@ -80,6 +90,7 @@ export type Project = {
   start_date: string | null;
   expected_completion_date: string | null;
   client_user: string | null;
+  client_user_email?: string | null;
   locations: ProjectLocation[];
   members: ProjectMember[];
   created_by: string | null;
@@ -116,6 +127,8 @@ export type ProjectWritePayload = {
   client?: string | null;
   status: ProjectStatus;
   project_type: ProjectType;
+  supervision_type?: SupervisionType;
+  assigned_region?: string;
   location?: string;
   address?: string;
   latitude?: string | null;
@@ -505,6 +518,33 @@ export type ProjectListParams = {
   search?: string;
   status?: ProjectStatus | "";
   project_type?: ProjectType | "";
+  supervision_type?: SupervisionType | "";
+  assigned_region?: string;
   ordering?: string;
   page?: number;
+};
+
+export type StageTemplate = {
+  id: string;
+  name: string;
+  name_ar: string;
+  description: string;
+  order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminUser = {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  phone_number: string;
+  is_active: boolean;
+  is_verified: boolean;
+  roles: string[];
+  created_at: string;
+  updated_at: string;
 };

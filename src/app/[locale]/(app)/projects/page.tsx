@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ProjectListView } from "@/components/projects/project-list-view";
 
@@ -14,5 +15,9 @@ export async function generateMetadata({ params }: ProjectsPageProps) {
 export default async function ProjectsPage({ params }: ProjectsPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <ProjectListView />;
+  return (
+    <Suspense fallback={null}>
+      <ProjectListView />
+    </Suspense>
+  );
 }

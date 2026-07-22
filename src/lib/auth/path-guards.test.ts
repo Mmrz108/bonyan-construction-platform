@@ -23,6 +23,8 @@ describe("path classification", () => {
   it("protects app routes but keeps marketing home public", () => {
     expect(isProtectedAppPath("/dashboard")).toBe(true);
     expect(isProtectedAppPath("/projects")).toBe(true);
+    expect(isProtectedAppPath("/stages")).toBe(true);
+    expect(isProtectedAppPath("/users")).toBe(true);
     expect(isProtectedAppPath("/")).toBe(false);
   });
 });

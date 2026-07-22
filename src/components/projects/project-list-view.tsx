@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { Plus } from "lucide-react";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -26,6 +27,7 @@ export function ProjectListView() {
   const tCommon = useTranslations("common");
   const locale = useLocale();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
   const canManage = canManageProjects(user?.roles);
   const [filters, setFilters] = useState<ProjectListParams>({
@@ -33,6 +35,12 @@ export function ProjectListView() {
     ordering: "-created_at",
   });
   const [showCreate, setShowCreate] = useState(false);
+
+  useEffect(() => {
+    if (canManage && searchParams.get("create") === "1") {
+      setShowCreate(true);
+    }
+  }, [canManage, searchParams]);
 
   const query = useProjectsQuery(filters);
   const totalPages = useMemo(() => {
@@ -113,64 +121,111 @@ export function ProjectListView() {
 
       {query.isSuccess && query.data.results.length > 0 ? (
         <>
-          <div className="overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--surface-elevated)]">
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead className="bg-[var(--surface-muted)]/70 text-start text-xs uppercase tracking-wide text-[var(--muted)]">
-                  <tr>
-                    <th className="px-4 py-3 font-medium">{t("fields.code")}</th>
-                    <th className="px-4 py-3 font-medium">{t("fields.name")}</th>
-                    <th className="px-4 py-3 font-medium">{t("fields.status")}</th>
-                    <th className="px-4 py-3 font-medium">{t("fields.type")}</th>
-                    <th className="px-4 py-3 font-medium">{t("fields.client")}</th>
-                    <th className="px-4 py-3 font-medium">{t("fields.location")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--line)]">
-                  {query.data.results.map((project) => {
-                    const displayName =
-                      locale === "ar" && project.name_ar
-                        ? project.name_ar
-                        : project.name;
-                    return (
-                      <tr
-                        key={project.id}
-                        className="hover:bg-[var(--brand-tint)]/40"
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {query.data.results.map((project) => {
+              const displayName =
+                locale === "ar" && project.name_ar
+                  ? project.name_ar
+                  : project.name;
+              const region =
+                project.assigned_region?.trim() ||
+                project.locations?.find((row) => row.is_primary)?.region ||
+                project.locations?.[0]?.region ||
+                "";
+              const mapsUrl =
+                project.latitude && project.longitude
+                  ? `https://www.google.com/maps?q=${project.latitude},${project.longitude}`
+                  : null;
+
+              return (
+                <article
+                  key={project.id}
+                  className="flex flex-col rounded-xl border border-[var(--line)] bg-[var(--surface-elevated)] p-5 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h2 className="truncate font-[family-name:var(--font-display)] text-lg text-[var(--ink)]">
+                        {displayName}
+                      </h2>
+                      <p className="mt-1 text-sm font-semibold text-[var(--brand)]">
+                        {t("fields.projectNo")}: {project.code || "—"}
+                      </p>
+                    </div>
+                    <ProjectStatusBadge status={project.status} />
+                  </div>
+
+                  <dl className="mt-4 space-y-2 text-sm">
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-[var(--muted)]">{t("fields.region")}</dt>
+                      <dd className="text-end font-medium text-[var(--ink)]">
+                        {region || t("regionNotAssigned")}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-[var(--muted)]">{t("fields.assignUser")}</dt>
+                      <dd className="max-w-[60%] truncate text-end font-medium text-[var(--ink)]">
+                        {project.client_user_email ||
+                          project.members?.find((m) => m.is_active)?.user_email ||
+                          t("assignUserNone")}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-[var(--muted)]">{t("fields.type")}</dt>
+                      <dd className="text-end font-medium text-[var(--ink)]">
+                        {t(`type.${project.project_type}`)}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-[var(--muted)]">
+                        {t("fields.supervision")}
+                      </dt>
+                      <dd className="text-end font-medium text-[var(--ink)]">
+                        {t(
+                          `supervision.${project.supervision_type ?? "visit_basis"}`,
+                        )}
+                      </dd>
+                    </div>
+                    {project.client_name ? (
+                      <div className="flex justify-between gap-3">
+                        <dt className="text-[var(--muted)]">{t("fields.client")}</dt>
+                        <dd className="text-end font-medium text-[var(--ink)]">
+                          {project.client_name}
+                        </dd>
+                      </div>
+                    ) : null}
+                  </dl>
+
+                  <div className="mt-5 flex flex-wrap gap-2 border-t border-[var(--line)] pt-4">
+                    <Link
+                      href={`/projects/${project.id}`}
+                      className="inline-flex h-9 items-center rounded-md border border-[var(--line)] bg-[var(--surface-elevated)] px-3 text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-muted)]"
+                    >
+                      {t("actions.viewProject")}
+                    </Link>
+                    <Link
+                      href={`/projects/${project.id}?tab=overview`}
+                      className="inline-flex h-9 items-center rounded-md border border-[var(--line)] px-3 text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-muted)]"
+                    >
+                      {t("actions.viewSite")}
+                    </Link>
+                    {mapsUrl ? (
+                      <a
+                        href={mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex h-9 items-center rounded-md bg-[var(--brand)] px-3 text-sm font-medium text-[var(--brand-contrast)] hover:bg-[var(--brand-strong)]"
                       >
-                        <td className="px-4 py-3 font-medium text-[var(--brand)]">
-                          <Link href={`/projects/${project.id}`}>{project.code}</Link>
-                        </td>
-                        <td className="px-4 py-3">
-                          <Link
-                            href={`/projects/${project.id}`}
-                            className="font-medium text-[var(--ink)] hover:underline"
-                          >
-                            {displayName}
-                          </Link>
-                          {project.contract_reference ? (
-                            <p className="mt-0.5 text-xs text-[var(--muted)]">
-                              {project.contract_reference}
-                            </p>
-                          ) : null}
-                        </td>
-                        <td className="px-4 py-3">
-                          <ProjectStatusBadge status={project.status} />
-                        </td>
-                        <td className="px-4 py-3 text-[var(--ink-soft)]">
-                          {t(`type.${project.project_type}`)}
-                        </td>
-                        <td className="px-4 py-3 text-[var(--ink-soft)]">
-                          {project.client_name || "—"}
-                        </td>
-                        <td className="px-4 py-3 text-[var(--ink-soft)]">
-                          {project.location || "—"}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        {t("actions.openLocation")}
+                      </a>
+                    ) : (
+                      <span className="inline-flex h-9 items-center rounded-md px-3 text-sm text-[var(--muted)]">
+                        {t("actions.openLocation")}
+                      </span>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
 
           <div className="flex items-center justify-between gap-3 text-sm text-[var(--muted)]">

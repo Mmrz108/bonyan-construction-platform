@@ -17,6 +17,7 @@ import { IssuesChart } from "@/components/dashboard/issues-chart";
 import { SiteVisitsPanel } from "@/components/dashboard/site-visits-panel";
 import { ErrorState, PageLoader } from "@/components/ui/states";
 import { useAuth } from "@/components/providers/auth-provider";
+import { AdminShortcuts } from "@/components/dashboard/admin-shortcuts";
 
 export function DashboardView() {
   const t = useTranslations("dashboard");
@@ -72,6 +73,8 @@ export function DashboardView() {
         })}
         description={t("description")}
       />
+
+      <AdminShortcuts />
 
       <section
         aria-label={t("metricsSection")}

@@ -15,8 +15,14 @@
   },
   "nav": {
     "dashboard": "لوحة التحكم",
-    "projects": "المشاريع",
-    "siteVisits": "الزيارات الميدانية",
+    "projects": "عرض المشاريع",
+    "createProject": "إنشاء مشروع",
+    "createStages": "إنشاء المراحل",
+    "siteVisits": "طلب زيارة موقع",
+    "users": "اختيار المستخدمين",
+    "clients": "العملاء",
+    "contracts": "العقود",
+    "email": "البريد",
     "issues": "الملاحظات",
     "reports": "التقارير",
     "settings": "الإعدادات",
@@ -94,6 +100,17 @@
     "emptyWorkspaceDescription": "عند تعيين مشاريع وزيارات لك، ستمتلئ لوحة التحكم بمؤشرات مباشرة.",
     "errorTitle": "تعذر تحميل لوحة التحكم",
     "errorDescription": "تعذر جلب مؤشرات الإشراف من الواجهة البرمجية. تحقق من الاتصال وحاول مرة أخرى.",
+    "adminShortcuts": {
+      "section": "اختصارات الإدارة",
+      "viewProjects": "عرض المشاريع",
+      "createProject": "إنشاء مشروع",
+      "addStages": "إضافة المراحل",
+      "userAccess": "إضافة / إزالة صلاحية المستخدم",
+      "visitRequests": "طلبات زيارة الموقع",
+      "pending": "الطلبات المعلقة",
+      "approved": "الطلبات المعتمدة",
+      "rejected": "الطلبات المرفوضة"
+    },
     "visitStatus": {
       "scheduled": "مجدولة",
       "in_progress": "قيد التنفيذ",
@@ -113,9 +130,14 @@
     "searchLabel": "بحث",
     "searchPlaceholder": "الرمز، الاسم، العميل، العقد…",
     "filterStatus": "الحالة",
-    "filterType": "النوع",
+    "filterType": "نوع المشروع",
+    "filterSupervision": "الإشراف",
     "filterAll": "الكل",
+    "filterAllTypes": "كل أنواع المشاريع",
+    "filterAllSupervision": "كل أنواع الإشراف",
     "clearFilters": "مسح عوامل التصفية",
+    "regionNotAssigned": "غير معيّن",
+    "assignUserNone": "غير معيّن",
     "pagination": "{count} مشروع · الصفحة {page} من {pages}",
     "emptyTitle": "لا توجد مشاريع",
     "emptyDescription": "جرّب تعديل عوامل التصفية، أو أنشئ مشروعًا إذا كانت لديك صلاحية الإدارة.",
@@ -161,7 +183,11 @@
       "contractPlaceholder": "اختر عقدًا",
       "client": "العميل",
       "status": "الحالة",
-      "type": "النوع",
+      "type": "نوع المشروع",
+      "supervision": "الإشراف",
+      "region": "المنطقة المعيّنة",
+      "projectNo": "رقم المشروع",
+      "assignUser": "المستخدم المعيّن",
       "location": "الموقع",
       "address": "العنوان",
       "latitude": "خط العرض",
@@ -197,7 +223,10 @@
       "next": "التالي",
       "addStage": "إضافة مرحلة",
       "addMember": "إضافة عضو",
-      "removeMember": "إزالة عضو"
+      "removeMember": "إزالة عضو",
+      "viewProject": "عرض المشروع",
+      "viewSite": "عرض الموقع",
+      "openLocation": "فتح الموقع"
     },
     "validation": {
       "codeRequired": "رمز المشروع مطلوب.",
@@ -238,6 +267,14 @@
       "industrial": "صناعي",
       "mixed_use": "متعدد الاستخدام",
       "other": "أخرى"
+    },
+    "supervision": {
+      "visit_basis": "أساس الزيارة",
+      "lump_sum": "مبلغ مقطوع",
+      "monthly_6": "شهري 6 مرات",
+      "monthly_4": "شهري 4 مرات",
+      "per_month_3": "3 مرات شهريًا",
+      "per_month_2": "مرتين شهريًا"
     },
     "stageStatus": {
       "not_started": "لم تبدأ",
@@ -689,5 +726,146 @@
     "footerCopyright": "جميع الحقوق محفوظة © Nathan Smartway.",
     "callNow": "اتصل الآن",
     "whatsapp": "واتساب"
+  },
+  "stagesAdmin": {
+    "title": "المراحل",
+    "description": "إدارة كتالوج مراحل البناء العام المستخدم في تخطيط المشاريع.",
+    "createTitle": "إضافة مرحلة",
+    "editTitle": "تعديل المراحل",
+    "formHint": "تظهر المراحل بالترتيب في شاشات تخطيط المشروع.",
+    "listTitle": "المراحل",
+    "emptyTitle": "لا توجد مراحل بعد",
+    "emptyDescription": "أضف أول مرحلة بناء إلى الكتالوج.",
+    "fields": {
+      "name": "اسم المرحلة",
+      "nameAr": "اسم المرحلة (عربي)",
+      "order": "الترتيب"
+    },
+    "actions": {
+      "add": "إضافة مرحلة",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "deleteConfirm": "إزالة هذه المرحلة من الكتالوج؟"
+    },
+    "validation": {
+      "nameRequired": "اسم المرحلة مطلوب."
+    },
+    "errors": {
+      "load": "تعذر تحميل المراحل",
+      "loadHint": "تحقق من صلاحية المسؤول أو حاول مرة أخرى.",
+      "saveFailed": "تعذر حفظ المرحلة."
+    }
+  },
+  "clientsAdmin": {
+    "title": "العملاء",
+    "description": "سجلات المنظمات المستخدمة عند إنشاء العقود والمشاريع.",
+    "createTitle": "إضافة عميل",
+    "createHint": "أضف عميلاً أولاً، ثم أنشئ عقدًا لهذا العميل.",
+    "searchPlaceholder": "ابحث عن العملاء…",
+    "emptyTitle": "لا يوجد عملاء بعد",
+    "emptyDescription": "أنشئ أول منظمة عميل.",
+    "pagination": "{count} عميل · الصفحة {page} من {pages}",
+    "fields": {
+      "code": "الرمز",
+      "name": "الاسم",
+      "city": "المدينة",
+      "region": "المنطقة"
+    },
+    "actions": {
+      "add": "إضافة عميل",
+      "closeForm": "إغلاق النموذج",
+      "delete": "حذف",
+      "deleteConfirm": "حذف هذا العميل بشكل ناعم؟",
+      "prev": "السابق",
+      "next": "التالي"
+    },
+    "errors": {
+      "load": "تعذر تحميل العملاء",
+      "loadHint": "تحتاج صلاحية إدارة العملاء.",
+      "saveFailed": "تعذر حفظ العميل."
+    }
+  },
+  "contractsAdmin": {
+    "title": "العقود",
+    "description": "أنشئ عقودًا بعدد زيارات شهري مخطط، ثم اربطها عند إنشاء المشاريع.",
+    "createTitle": "إضافة عقد",
+    "createHint": "اختر عميلاً وحدّد الزيارات المخططة شهريًا لإيقاع الإشراف.",
+    "searchPlaceholder": "ابحث عن العقود…",
+    "emptyTitle": "لا توجد عقود بعد",
+    "emptyDescription": "أنشئ عميلاً أولاً، ثم أضف عقدًا.",
+    "pagination": "{count} عقد · الصفحة {page} من {pages}",
+    "hints": {
+      "needClient": "لا يوجد عملاء —"
+    },
+    "validation": {
+      "clientRequired": "اختر عميلاً."
+    },
+    "fields": {
+      "client": "العميل",
+      "clientPlaceholder": "اختر عميلاً",
+      "reference": "رمز المرجع",
+      "title": "العنوان",
+      "visitsPerMonth": "الزيارات المخططة / شهر",
+      "visitsShort": "{count} زيارة/شهر"
+    },
+    "actions": {
+      "add": "إضافة عقد",
+      "closeForm": "إغلاق النموذج",
+      "manageClients": "إدارة العملاء",
+      "delete": "حذف",
+      "deleteConfirm": "حذف هذا العقد بشكل ناعم؟",
+      "prev": "السابق",
+      "next": "التالي"
+    },
+    "errors": {
+      "load": "تعذر تحميل العقود",
+      "loadHint": "تحتاج صلاحية إدارة العقود.",
+      "saveFailed": "تعذر حفظ العقد."
+    }
+  },
+  "usersAdmin": {
+    "title": "المستخدمون",
+    "description": "تحقق من المستخدمين وأضف الصلاحيات وعدّل الأدوار وأوقف الحسابات — القائمة تتحدث بدون رفرش.",
+    "addTitle": "إضافة مستخدم",
+    "addHint": "أنشئ حساب مستخدم وعيّن دورًا أوليًا. تتحدث قائمة الموثّقين فور الحفظ.",
+    "editTitle": "تعديل المستخدم",
+    "searchPlaceholder": "ابحث بالاسم أو البريد…",
+    "emptyTitle": "لا يوجد مستخدمون في هذه القائمة",
+    "emptyDescription": "جرّب تبويبًا آخر أو عدّل البحث.",
+    "pagination": "{count} مستخدم · الصفحة {page} من {pages}",
+    "successCreated": "تم إنشاء المستخدم. عرض قائمة الموثّقين.",
+    "successUpdated": "تم تحديث المستخدم.",
+    "tabs": {
+      "verified": "موثّق",
+      "add": "إضافة مستخدم",
+      "nonVerified": "غير موثّق",
+      "suspended": "موقوف"
+    },
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "phone": "الهاتف",
+      "password": "كلمة المرور",
+      "newPassword": "كلمة مرور جديدة",
+      "newPasswordHint": "اتركه فارغًا للإبقاء على كلمة المرور الحالية",
+      "role": "الدور",
+      "since": "منذ"
+    },
+    "actions": {
+      "create": "إنشاء مستخدم",
+      "edit": "تعديل",
+      "verify": "توثيق",
+      "unverify": "إلغاء التوثيق",
+      "suspend": "إيقاف",
+      "reactivate": "إعادة تفعيل",
+      "prev": "السابق",
+      "next": "التالي"
+    },
+    "errors": {
+      "load": "تعذر تحميل المستخدمين",
+      "loadHint": "صلاحية المسؤول مطلوبة لاختيار المستخدمين.",
+      "saveFailed": "تعذر تحديث صلاحية المستخدم."
+    }
   }
 }

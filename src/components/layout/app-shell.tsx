@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { Suspense, useState, type ReactNode } from "react";
 import { Sidebar } from "./sidebar";
 import { TopNav } from "./top-nav";
 
@@ -9,7 +9,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-[var(--surface)] text-[var(--ink)]">
-      <Sidebar open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <Suspense fallback={<div className="hidden w-[17.5rem] shrink-0 lg:block" />}>
+        <Sidebar open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      </Suspense>
       <div className="flex min-w-0 flex-1 flex-col">
         <TopNav onMenuClick={() => setMobileOpen(true)} />
         <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">{children}</main>

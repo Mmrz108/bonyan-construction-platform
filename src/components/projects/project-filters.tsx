@@ -7,10 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import {
-  PROJECT_STATUSES,
   PROJECT_TYPES,
+  SUPERVISION_TYPES,
 } from "@/lib/validations/projects";
-import type { ProjectListParams, ProjectStatus, ProjectType } from "@/lib/api/types";
+import type {
+  ProjectListParams,
+  ProjectType,
+  SupervisionType,
+} from "@/lib/api/types";
 
 type ProjectFiltersProps = {
   value: ProjectListParams;
@@ -35,7 +39,9 @@ export function ProjectFilters({ value, onChange }: ProjectFiltersProps) {
   }, [search, onChange, value]);
 
   const hasFilters =
-    Boolean(value.search) || Boolean(value.status) || Boolean(value.project_type);
+    Boolean(value.search) ||
+    Boolean(value.project_type) ||
+    Boolean(value.supervision_type);
 
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-[var(--line)] bg-[var(--surface-elevated)] p-4 sm:flex-row sm:flex-wrap sm:items-end">
@@ -55,29 +61,6 @@ export function ProjectFilters({ value, onChange }: ProjectFiltersProps) {
         </div>
       </div>
 
-      <div className="w-full sm:w-44">
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
-          {t("filterStatus")}
-        </label>
-        <Select
-          value={value.status ?? ""}
-          onChange={(event) =>
-            onChange({
-              ...value,
-              status: (event.target.value || "") as ProjectStatus | "",
-              page: 1,
-            })
-          }
-        >
-          <option value="">{t("filterAll")}</option>
-          {PROJECT_STATUSES.map((status) => (
-            <option key={status} value={status}>
-              {t(`status.${status}`)}
-            </option>
-          ))}
-        </Select>
-      </div>
-
       <div className="w-full sm:w-48">
         <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
           {t("filterType")}
@@ -92,10 +75,38 @@ export function ProjectFilters({ value, onChange }: ProjectFiltersProps) {
             })
           }
         >
-          <option value="">{t("filterAll")}</option>
-          {PROJECT_TYPES.map((type) => (
+          <option value="">{t("filterAllTypes")}</option>
+          <option value="commercial">{t("type.commercial")}</option>
+          <option value="residential">{t("type.residential")}</option>
+          {PROJECT_TYPES.filter(
+            (type) => type !== "commercial" && type !== "residential",
+          ).map((type) => (
             <option key={type} value={type}>
               {t(`type.${type}`)}
+            </option>
+          ))}
+        </Select>
+      </div>
+
+      <div className="w-full sm:w-56">
+        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+          {t("filterSupervision")}
+        </label>
+        <Select
+          value={value.supervision_type ?? ""}
+          onChange={(event) =>
+            onChange({
+              ...value,
+              supervision_type: (event.target.value ||
+                "") as SupervisionType | "",
+              page: 1,
+            })
+          }
+        >
+          <option value="">{t("filterAllSupervision")}</option>
+          {SUPERVISION_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {t(`supervision.${type}`)}
             </option>
           ))}
         </Select>

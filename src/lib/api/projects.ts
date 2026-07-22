@@ -17,6 +17,8 @@ export function listProjects(params: ProjectListParams = {}) {
     search: params.search,
     status: params.status || undefined,
     project_type: params.project_type || undefined,
+    supervision_type: params.supervision_type || undefined,
+    assigned_region: params.assigned_region || undefined,
     ordering: params.ordering || "-created_at",
     page: params.page ?? 1,
   });

@@ -67,12 +67,20 @@ describe("getNavItemsForRoles", () => {
     expect(keys).toContain("issues");
     expect(keys).not.toContain("settings");
     expect(keys).not.toContain("reports");
+    expect(keys).not.toContain("createStages");
+    expect(keys).not.toContain("users");
   });
 
-  it("shows settings for admins", () => {
+  it("shows admin consultancy panel modules", () => {
     const keys = getNavItemsForRoles(["ADMIN"]).map((item) => item.key);
     expect(keys).toContain("settings");
     expect(keys).toContain("reports");
     expect(keys).toContain("issues");
+    expect(keys).toContain("createProject");
+    expect(keys).toContain("createStages");
+    expect(keys).toContain("users");
+    expect(keys).toContain("clients");
+    expect(keys).toContain("contracts");
+    expect(keys).toContain("email");
   });
 });

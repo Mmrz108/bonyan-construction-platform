@@ -8,6 +8,7 @@ import {
   createProjectSchema,
   PROJECT_STATUSES,
   PROJECT_TYPES,
+  SUPERVISION_TYPES,
   type ProjectFormValues,
 } from "@/lib/validations/projects";
 import type { Project } from "@/lib/api/types";
@@ -55,6 +56,8 @@ export function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) 
       contract: project?.contract ?? "",
       status: project?.status ?? "planning",
       project_type: project?.project_type ?? "other",
+      supervision_type: project?.supervision_type ?? "visit_basis",
+      assigned_region: project?.assigned_region ?? "",
       location: project?.location ?? "",
       address: project?.address ?? "",
       latitude: project?.latitude ?? "",
@@ -74,6 +77,8 @@ export function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) 
       contract: values.contract,
       status: values.status,
       project_type: values.project_type,
+      supervision_type: values.supervision_type,
+      assigned_region: values.assigned_region || "",
       location: values.location || "",
       address: values.address || "",
       latitude: values.latitude,
@@ -117,6 +122,11 @@ export function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) 
               </option>
             ))}
           </Select>
+          {(contracts.data?.results.length ?? 0) === 0 ? (
+            <p className="mt-1 text-xs text-[var(--muted)]">
+              {t("createHint")}
+            </p>
+          ) : null}
         </Field>
         <Field label={t("fields.name")} error={errors.name?.message} className="sm:col-span-2">
           <Input invalid={Boolean(errors.name)} {...register("name")} />
@@ -141,6 +151,18 @@ export function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) 
               </option>
             ))}
           </Select>
+        </Field>
+        <Field label={t("fields.supervision")} error={errors.supervision_type?.message}>
+          <Select {...register("supervision_type")}>
+            {SUPERVISION_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {t(`supervision.${type}`)}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        <Field label={t("fields.region")}>
+          <Input {...register("assigned_region")} />
         </Field>
         <Field label={t("fields.location")}>
           <Input {...register("location")} />

@@ -20,19 +20,12 @@ const EMAIL = "bonyanec.oman@gmail.com";
 
 export function HomePage() {
   const t = useTranslations("home");
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
     const id = requestAnimationFrame(() => setVisible(true));
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(id);
-    };
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const nav = [
@@ -46,17 +39,10 @@ export function HomePage() {
 
   return (
     <div className="home-site min-h-screen bg-[var(--home-paper)] text-[var(--home-ink)]">
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300",
-          scrolled
-            ? "border-b border-white/10 bg-[color-mix(in_srgb,var(--home-ink)_92%,transparent)] shadow-[0_10px_40px_rgba(8,20,40,0.25)] backdrop-blur-md"
-            : "bg-transparent",
-        )}
-      >
+      <header className="fixed inset-x-0 top-0 z-50 bg-transparent">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <a href="#top" className="flex items-center gap-3">
-            <span className="inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white shadow-md ring-2 ring-white/40 sm:h-14 sm:w-14">
+            <span className="inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white/95 shadow-md ring-2 ring-white/70 sm:h-14 sm:w-14">
               <Image
                 src="/brand/bonyan-logo.png"
                 alt={t("brandAlt")}
@@ -66,20 +52,21 @@ export function HomePage() {
                 priority
               />
             </span>
-            <span className="hidden max-w-[11rem] text-xs font-semibold leading-snug text-white sm:block">
+            <span className="hidden max-w-[11rem] text-xs font-semibold leading-snug !text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:block">
               Bonyän Construction &amp; Engineering Consultancy
             </span>
           </a>
 
           <nav
-            className="hidden items-center gap-6 lg:flex"
+            className="hidden items-center gap-2 lg:flex"
             aria-label={t("navHome")}
           >
             {nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium tracking-wide text-white/85 transition-colors hover:text-white"
+                className="rounded-full border border-white/30 bg-white/15 px-3.5 py-1.5 text-sm font-semibold tracking-wide !text-white shadow-sm backdrop-blur-md transition-colors hover:border-white/50 hover:bg-white/25 hover:!text-white"
+                style={{ WebkitBackdropFilter: "blur(12px)", color: "#ffffff" }}
               >
                 {item.label}
               </a>
@@ -87,16 +74,18 @@ export function HomePage() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <LocaleSwitcher className="border-white/20 bg-white/10 [&_button]:text-white/80 [&_button[aria-pressed=true]]:bg-[var(--home-cta)] [&_button[aria-pressed=true]]:text-[var(--home-ink)]" />
+            <LocaleSwitcher className="border-white/30 bg-white/15 backdrop-blur-md [&_button]:!text-white [&_button]:hover:!text-white [&_button[aria-pressed=true]]:bg-[var(--home-cta)] [&_button[aria-pressed=true]]:!text-[var(--home-ink)]" />
             <Link
               href="/login"
-              className="hidden rounded-md bg-[var(--home-cta)] px-3.5 py-2 text-sm font-semibold text-[var(--home-ink)] transition hover:bg-[var(--home-cta-strong)] hover:text-white sm:inline-flex"
+              className="hidden rounded-full border border-white/30 bg-white/15 px-3.5 py-2 text-sm font-semibold !text-white shadow-sm backdrop-blur-md transition hover:bg-white/25 hover:!text-white sm:inline-flex"
+              style={{ WebkitBackdropFilter: "blur(12px)", color: "#ffffff" }}
             >
               {t("signIn")}
             </Link>
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/25 text-white lg:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/15 !text-white backdrop-blur-md lg:hidden"
+              style={{ WebkitBackdropFilter: "blur(12px)", color: "#ffffff" }}
               aria-expanded={menuOpen}
               aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
               onClick={() => setMenuOpen((v) => !v)}
@@ -112,13 +101,14 @@ export function HomePage() {
         </div>
 
         {menuOpen ? (
-          <div className="border-t border-white/10 bg-[var(--home-ink)] px-4 py-4 lg:hidden">
-            <div className="flex flex-col gap-3">
+          <div className="border-t border-white/15 bg-[color-mix(in_srgb,var(--home-ink)_92%,black)] px-4 py-4 backdrop-blur-md lg:hidden">
+            <div className="flex flex-col gap-1">
               {nav.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-base font-medium text-white/90"
+                  className="rounded-lg px-3 py-2.5 text-base font-semibold !text-white hover:bg-white/10 hover:!text-white"
+                  style={{ color: "#ffffff" }}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
@@ -234,7 +224,7 @@ export function HomePage() {
               {GALLERY.map((src, index) => (
                 <figure
                   key={src}
-                  className="group relative aspect-[4/5] overflow-hidden bg-[var(--home-mist)]"
+                  className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-[var(--home-mist)]"
                 >
                   <Image
                     src={src}
@@ -533,7 +523,7 @@ export function HomePage() {
           href={`https://wa.me/${WHATSAPP}`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center justify-center rounded-md bg-[var(--home-action)] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:bg-[var(--home-action-strong)]"
+          className="inline-flex items-center justify-center rounded-md bg-[var(--home-action)] px-4 py-2.5 text-sm font-semibold !text-white shadow-lg shadow-black/20 transition hover:bg-[var(--home-action-strong)] hover:!text-white"
         >
           {t("whatsapp")}
         </a>
